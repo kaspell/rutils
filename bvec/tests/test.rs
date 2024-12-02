@@ -6,56 +6,80 @@ mod tests {
         use super::*;
 
         #[test]
-        fn test_bit_push_set() {
+        fn test_push() {
                 let mut bv = BitVec::new();
-                bv.push_1();
-                bv.push_1();
-                bv.push_0();
-                bv.push_1();
-                bv.push_0();
-                bv.push_0();
-                bv.push_1();
-                bv.push_0();
-                bv.push_0();
-                bv.push_0();
-                bv.push_0();
-                bv.push_1();
-                bv.push_0();
-                bv.push_0();
-                bv.push_1();
-                bv.push_1();
-                bv.push_1();
-                bv.push_1();
-                assert_eq!(bv.is_set(0), true);
-                assert_eq!(bv.is_set(1), true);
-                assert_eq!(bv.is_set(2), false);
-                assert_eq!(bv.is_set(3), true);
-                assert_eq!(bv.is_set(4), false);
-                assert_eq!(bv.is_set(5), false);
-                assert_eq!(bv.is_set(6), true);
-                assert_eq!(bv.is_set(7), false);
-                assert_eq!(bv.is_set(8), false);
-                assert_eq!(bv.is_set(9), false);
-                bv.set(2);
-                bv.set(4);
-                bv.set(5);
-                bv.set(7);
-                bv.set(8);
-                assert_eq!(bv.is_set(2), true);
-                assert_eq!(bv.is_set(4), true);
-                assert_eq!(bv.is_set(5), true);
-                assert_eq!(bv.is_set(7), true);
-                assert_eq!(bv.is_set(8), true);
-                for i in 0..17 {
-                        bv.clear(i);
+                let a = 27;
+                for _ in 0 .. a {
+                        bv.push_1();
                 }
-                bv.set(0);
-                bv.set(9);
-                bv.set(16);
-                bv.set(17);
-                assert_eq!(bv.is_set(0), true);
-                assert_eq!(bv.is_set(9), true);
-                assert_eq!(bv.is_set(16), true);
-                assert_eq!(bv.is_set(17), true);
+                for i in a .. 2*a {
+                        if i % 2 == 0 {
+                                bv.push_1();
+                        } else {
+                                bv.push_0();
+                        }
+                }
+                for _ in 2*a .. 3*a {
+                        bv.push_0()
+                }
+
+                for i in 0 .. a {
+                        assert_eq!(bv.is_set(i), true);
+                }
+                for i in a .. 2*a {
+                        if i % 2 == 0 {
+                                assert_eq!(bv.is_set(i), true);
+                        } else {
+                                assert_eq!(bv.is_set(i), false);
+                        }
+                }
+                for i in 2*a .. 3*a {
+                        assert_eq!(bv.is_set(i), false);
+                }
+        }
+
+        #[test]
+        fn test_set_and_clear() {
+                let mut bv = BitVec::new();
+                let a = 51;
+                for _ in 0 .. a {
+                        bv.push_1();
+                }
+                for _ in a .. 2*a {
+                        bv.push_0();
+                }
+
+                for i in 0 .. a {
+                        assert_eq!(bv.is_set(i), true);
+                }
+                for i in a .. 2*a {
+                        assert_eq!(bv.is_set(i), false);
+                }
+
+                for i in 0 .. a {
+                        if i % 3 == 0 {
+                                bv.clear(i);
+                        }
+                }
+                for i in a .. 2*a {
+                        if i % 4 == 0 {
+                                bv.set(i);
+                        }
+                }
+
+                for i in 0 .. a {
+                        if i % 3 == 0 {
+                                assert_eq!(bv.is_set(i), false);
+                        } else {
+                                assert_eq!(bv.is_set(i), true);
+                        }
+                }
+                for i in a .. 2*a {
+                        if i % 4 == 0 {
+                                assert_eq!(bv.is_set(i), true);
+                        } else {
+                                assert_eq!(bv.is_set(i), false);
+                        }
+                }
         }
 }
