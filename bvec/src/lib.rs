@@ -1,10 +1,16 @@
 #[derive(Clone)]
 pub struct BitVec {
-        blocks: Vec::<u8>,
-        size: usize,
+        pub blocks: Vec::<u8>,
+        pub size: usize,
 }
 
 impl BitVec {
+        pub fn print(self: &Self) {
+                for block in &self.blocks {
+                        print!("{:08b}", block);
+                }
+                println!("");
+        }
         pub fn new() -> Self {
                 Self { blocks: vec![0; 1], size: 0 }
         }
